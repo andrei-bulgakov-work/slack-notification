@@ -38,7 +38,7 @@ runs:
       shell: bash
       env:
         SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url || secrets.SLACK_WEBHOOK_URL_FIXME }}
-        WORKFLOW_NAME: ${{ inputs.inputs.workflow_name }}
+        WORKFLOW_NAME: ${{ inputs.workflow_name }}
         WORKFLOW_CONCLUSION: ${{ inputs.workflow_conclusion }}
         WORKFLOW_RUN_ID: ${{ inputs.workflow_run_id }}
         WORKFLOW_PATH: ${{ inputs.workflow_path }}
