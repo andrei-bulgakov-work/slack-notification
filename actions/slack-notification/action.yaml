@@ -9,7 +9,7 @@ inputs:
   slack_webhook_url:
     description: Slack webhook URL for sending notifications
     required: false
-    default: ''
+    default: ${{ secrets.SLACK_WEBHOOK_URL_FIXME }}
   workflow_name:
     description: Name of the workflow
     required: true
@@ -37,7 +37,7 @@ runs:
     - name: Send Slack Notification
       shell: bash
       env:
-        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url || secrets.SLACK_WEBHOOK_URL_FIXME }}
+        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}
         WORKFLOW_NAME: ${{ inputs.workflow_name }}
         WORKFLOW_CONCLUSION: ${{ inputs.workflow_conclusion }}
         WORKFLOW_RUN_ID: ${{ inputs.workflow_run_id }}
