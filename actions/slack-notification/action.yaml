@@ -8,8 +8,7 @@ inputs:
     default: ubuntu-latest
   slack_webhook_url:
     description: Slack webhook URL for sending notifications
-    required: false
-    default: ''
+    required: true
   workflow_name:
     description: Name of the workflow
     required: true
@@ -38,7 +37,6 @@ runs:
       shell: bash
       env:
         SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url }}
-        SLACK_WEBHOOK_URL_FLVR: ${{ secrets.SLACK_WEBHOOK_URL_FIXME }}
         WORKFLOW_NAME: ${{ inputs.workflow_name }}
         WORKFLOW_CONCLUSION: ${{ inputs.workflow_conclusion }}
         WORKFLOW_RUN_ID: ${{ inputs.workflow_run_id }}
@@ -47,7 +45,7 @@ runs:
         BRANCH_NAME: ${{ inputs.branch_name }}
       run: |
         bash $GITHUB_ACTION_PATH/notify_slack.sh \
-          --webhook="${SLACK_WEBHOOK_URL:-$SLACK_WEBHOOK_URL_FLVR}" \
+          --webhook="$SLACK_WEBHOOK_URL" \
           --workflow-name="$WORKFLOW_NAME" \
           --conclusion="$WORKFLOW_CONCLUSION" \
           --run-id="$WORKFLOW_RUN_ID" \
