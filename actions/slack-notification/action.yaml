@@ -1,0 +1,55 @@
+name: Slack Notification
+description: Send notification to Slack
+
+inputs:
+  RUNNER:
+    description: Runner for the workflow
+    required: false
+    default: ubuntu-latest
+  slack_webhook_url:
+    description: Slack webhook URL for sending notifications
+    required: false
+    default: ''
+  workflow_name:
+    description: Name of the workflow
+    required: true
+  workflow_conclusion:
+    description: Conclusion status of the workflow (e.g., cancelled, failure, timed_out)
+    required: true
+  workflow_run_id:
+    description: Unique identifier for the workflow run
+    required: true
+  workflow_path:
+    description: Path to the workflow file
+    required: true
+  pr_number:
+    description: Pull request number (optional)
+    required: false
+    default: ''
+  branch_name:
+    description: 'Name of the branch'
+    required: false
+    default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - name: Send Slack Notification
+      shell: bash
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook_url || secrets.SLACK_WEBHOOK_URL_FIXME }}
+        WORKFLOW_NAME: ${{ inputs.inputs.workflow_name }}
+        WORKFLOW_CONCLUSION: ${{ inputs.workflow_conclusion }}
+        WORKFLOW_RUN_ID: ${{ inputs.workflow_run_id }}
+        WORKFLOW_PATH: ${{ inputs.workflow_path }}
+        PR_NUMBER: ${{ inputs.pr_number }}
+        BRANCH_NAME: ${{ inputs.branch_name }}
+      run: |
+        bash ./notify_slack.sh \
+          --webhook="$SLACK_WEBHOOK_URL" \
+          --workflow-name="$WORKFLOW_NAME" \
+          --conclusion="$WORKFLOW_CONCLUSION" \
+          --run-id="$WORKFLOW_RUN_ID" \
+          --workflow-path="$WORKFLOW_PATH" \
+          --pr-number="$PR_NUMBER" \
+          --branch-name="$BRANCH_NAME"
