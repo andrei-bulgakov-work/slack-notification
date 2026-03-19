@@ -29,11 +29,14 @@ jobs:
           # Read version from file
           VERSION=$(<VERSION)
 
+          # Remove 'v' prefix if present
+          VERSION=${VERSION#v}
+
           # Split version into parts
           IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
 
-          # Create an array of tags
-          TAGS=("$MAJOR" "$MAJOR.$MINOR" "$VERSION")
+          # Create an array of tags with 'v' prefix
+          TAGS=("v$MAJOR" "v$MAJOR.$MINOR" "v$MAJOR.$MINOR.$PATCH")
 
           # Iterate over array safely
           for TAG in "${TAGS[@]}"; do
