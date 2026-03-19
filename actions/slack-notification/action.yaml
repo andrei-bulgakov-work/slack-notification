@@ -2,10 +2,6 @@ name: Slack Notification
 description: Send notification to Slack
 
 inputs:
-  RUNNER:
-    description: Runner for the workflow
-    required: false
-    default: ubuntu-latest
   slack_webhook_url:
     description: Slack webhook URL for sending notifications
     required: true
