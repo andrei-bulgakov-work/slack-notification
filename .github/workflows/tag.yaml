@@ -1,0 +1,43 @@
+name: Create Version Tags on PRs merged to Main
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  tag:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create version tag
+        run: |
+          # Read version from file
+          VERSION=$(<VERSION)
+
+          # Split version into parts
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+          # Create an array of tags
+          TAGS=("$MAJOR" "$MAJOR.$MINOR" "$VERSION")
+
+          # Iterate over array safely
+          for TAG in "${TAGS[@]}"; do
+            git tag "$TAG"
+          done
+          git push origin --tags --force
