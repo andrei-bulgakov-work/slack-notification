@@ -45,9 +45,7 @@ runs:
         PR_NUMBER: ${{ inputs.pr_number }}
         BRANCH_NAME: ${{ inputs.branch_name }}
       run: |
-        ls -la
-        pwd
-        bash ./notify_slack.sh \
+        bash $GITHUB_ACTION_PATH/notify_slack.sh \
           --webhook="$SLACK_WEBHOOK_URL" \
           --workflow-name="$WORKFLOW_NAME" \
           --conclusion="$WORKFLOW_CONCLUSION" \
